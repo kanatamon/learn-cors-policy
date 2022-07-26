@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "lib": ["ESNext"],
+    "module": "commonjs",
+
+    "strict": true,
+    "esModuleInterop": true,
+
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true
+  },
+  "references": [{ "path": "./packages/web-client" }]
+}
