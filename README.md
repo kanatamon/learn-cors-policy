@@ -138,7 +138,18 @@ Access-Control-Allow-Origin: http://client.app
 
 ## Cache Preflight Request
 
-TODO: Add description
+When we would like to perform a cross-site request with some customized header,
+we then are going to end-up with a preflight request ahead of our actual request.
+
+That might a number of roundtrips to our server. But we can alternate to reduce
+that number. By setting `Access-Control-Max-Age` on the server, this would let
+a browser known that we would to cache any further preflight request.
+
+There is thing to notice that vary browsers handle `Access-Control-Max-Age` in
+different policy.
+
+> eg.
+> The Google Chrome would cache maximum to 2 hours, even `Access-Control-Max-Age: 9999999`
 
 ## Set Cookies Across Origin
 
