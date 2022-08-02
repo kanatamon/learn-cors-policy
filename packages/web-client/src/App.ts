@@ -2,6 +2,10 @@ import './index.css';
 
 const API_ENDPOINT = 'http://localhost:4000';
 
+(function init() {
+  updateToAuthorizedUI();
+})();
+
 (function registerLoginSubmission() {
   const formElm = getSelector<HTMLFormElement>('#login-submission');
   formElm.addEventListener('submit', async (event) => {
@@ -94,9 +98,12 @@ async function updateToAuthorizedUI() {
     });
   }
 
-  if (!res.ok) {
-    // TODO: show the login-form
-    throw new Error(`NOT IMPLEMENTED YET`);
+  if (!res.ok && res.status === 401) {
+    updateToUnauthorizedUI();
+  }
+
+  if (!res.ok && res.status !== 401) {
+    throw new Error(`Unsupported status code: ${res.status}`);
   }
 }
 
