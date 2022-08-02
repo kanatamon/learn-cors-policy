@@ -1,5 +1,10 @@
 # Learn CORS, How to use it, And How to Broke It
 
+This is myself workshop, just let my hand get dirty with CORS stuff. Inspired
+by the [blogpost](https://dev.to/lydiahallie/cs-visualized-cors-5b8h#cs-cors) by
+Lydia Hallie, which is pretty amazing explaining visually. If you would love to
+read how CORS's policy are doing, you should check it out.
+
 ## Table of Contents (branch oriented)
 
 I intentionally separated the source code into 2 branches
