@@ -153,7 +153,30 @@ different policy.
 
 ## Set Cookies Across Origin
 
-TODO: Add description
+On client-side, If you perform a request using _fetch_, then check that `credential` is `include`.
+
+```ts
+await fetch(`${API_ENDPOINT}/logout`, {
+  method: 'POST',
+
+  // This let the browser know to store any cookie.
+  // But if you don't apply this, the browser would throw some error, anyways.
+  credentials: 'include',
+});
+```
+
+On server-side, make sure that `Access-Control-Allow-Credentials: true` is included
+in a response and also `Access-Control-Allow-Origin` as usual.
+
+And importantly,
+`Set-Cookie` should include value `Secure` and `SameSite=None` as [the specification](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite#none).
+
+```http
+HTTP/1.1 200 OK
+Access-Control-Allow-Origin: https://client.app
+Access-Control-Allow-Credentials: true
+Set-Cookie: key=value; Path=/; Expires=Thu, 01 Sep 2022 17:07:09 GMT; HttpOnly; Secure; SameSite=None
+```
 
 ## Why Browser Doesn't Set Cookie Even Server Responded `Set-Cookie`'s Header ?
 
