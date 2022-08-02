@@ -27,7 +27,52 @@ For authentication, using cookie and absolutely on cross-site.
 
 ## Simple Request
 
-TODO: Add description
+Simple request is either HTTP's method `GET` or `POST` **without** modified headers.
+You could see the example on _/package/web-client/src/App.ts_ when we do _fetch_
+for login, logout, and getting account data.
+
+```ts
+// eg 1. Logout
+await fetch(`${API_ENDPOINT}/logout`, {
+  method: 'POST',
+  credentials: 'include',
+});
+
+// eg 2. Getting account data
+await fetch(`${API_ENDPOINT}/account`, {
+  credentials: 'include',
+});
+```
+
+> Note that `credentials: 'include'` would let the browser send any httpOnly cookies
+> along with a request. And this is NOT modification to headers.
+
+What differ to normal HTTP's request is that a request would fire to differ origin.
+And then CORS's policy would start dominating by the browser, where the browser
+is going to expect checking the responded header should include `Access-Control-Allow-Origin`
+with value of the client's origin to matches with. Otherwise the browser will throw
+an error with something like this **Access to fetched has been blocked by CORS policy**.
+
+```HTTP
+# This is HTTP request when a simple request fired
+
+# When cross-site request is made
+GET http://api.server HTTP/1.1
+
+# Then the browser automatically adds an extra header to the HTTP request
+# `Origin` where the value is the origin where the request came from
+Origin: http://client.app
+```
+
+```HTTP
+# This is HTTP response what browser expected
+
+HTTP/1.1 200 OK
+
+# The response should include this header with matching `Origin` fired on the first place
+Access-Control-Allow-Origin: http://client.app
+...
+```
 
 ## Preflight Request
 
