@@ -27,7 +27,7 @@ For authentication, using cookie and absolutely on cross-site.
 
 ## Simple Request
 
-Simple request is either HTTP's method `GET` or `POST` **without** modified headers.
+Simple request is either HTTP's method `GET` or `POST` **without** customized headers.
 You could see the example on _/package/web-client/src/App.ts_ when we do _fetch_
 for login, logout, and getting account data.
 
@@ -53,7 +53,7 @@ is going to expect checking the responded header should include `Access-Control-
 with value of the client's origin to matches with. Otherwise the browser will throw
 an error with something like this **Access to fetched has been blocked by CORS policy**.
 
-```HTTP
+```http
 # This is HTTP request when a simple request fired
 
 # When cross-site request is made
@@ -64,19 +64,72 @@ GET http://api.server HTTP/1.1
 Origin: http://client.app
 ```
 
-```HTTP
+```http
 # This is HTTP response what browser expected
 
 HTTP/1.1 200 OK
 
-# The response should include this header with matching `Origin` fired on the first place
+# The response should include this header with matching `Origin` added on the request
 Access-Control-Allow-Origin: http://client.app
 ...
 ```
 
 ## Preflight Request
 
-TODO: Add description
+If you would to fire some HTTP's request with customized header to another origin.
+By default, the browser wouldn't let you do customize any header, unless you did
+request that customization to the server.
+
+Let's say would like to PATCH the following request
+
+```http
+PATCH https://api.server HTTP/1.1
+Origin: https://client.app
+Content-Type: application/json
+...
+```
+
+By doing this request, you're customizing header with method `PATCH` and `Content-Type: application/json`.
+And then the browser would fire additional HTTP request to the server ahead your
+actual request. The additional request is called a **preflight request**. And It
+would look like this.
+
+```http
+OPTIONS https://api.server HTTP/1.1
+Origin: https://client.app
+Access-Control-Request-Method: PATCH
+Access-Control-Request-Headers: Content-Type
+```
+
+Notice that HTTP method `OPTIONS` would be perform and header `Access-Control-Request-*`
+would be what automatically setting by the browser with `*` are going to be what
+customizations applied on the actual request. Then the browser would check the response
+to include some `Access-Control-Allow-*`.
+
+```http
+HTTP/1.1 200 OK
+
+# The response should include this header with matching `Origin` added on the request
+Access-Control-Allow-Origin: http://client.app
+
+# The response should include HTTP method where be using in the actual request
+Access-Control-Allow-Method: PATCH
+
+# The response should include customization's keys where appear in the actual request
+Access-Control-Allow-Headers: Content-Type
+...
+```
+
+If a preflight response is OK, then an actual request would be able to perform.
+With only one check, that actual response must include `Access-Control-Allow-Origin`
+like a simple response.
+
+```http
+HTTP/1.1 200 OK
+
+Access-Control-Allow-Origin: http://client.app
+...
+```
 
 ## Cache Preflight Request
 
