@@ -1,11 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>web-client</title>
-</head>
-<body>
-  <div id="app"></div>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bank App</title>
+  </head>
+  <body>
+    <nav>
+      <section>
+        <header>Hello Bank</header>
+      </section>
+      <section class="flex-inline">
+        <header
+          id="authorized-header"
+          aria-hidden="true"
+          style="display: none"
+        ></header>
+        <form id="logout-submission" aria-hidden="true" style="display: none">
+          <button type="submit">Logout</button>
+        </form>
+        <form id="login-submission">
+          <label for="account-name">Account Name</label>
+          <input id="account-name" name="accountName" />
+          <button type="submit">Login</button>
+        </form>
+      </section>
+    </nav>
+    <main id="authorized-menu" aria-hidden="true" style="display: none">
+      <section class="card">
+        <label
+          >Balance:&nbsp;<input id="balance" readonly name="balance"
+        /></label>
+      </section>
+      <section id="transfer" class="card">
+        <header>Transfer</header>
+        <form>
+          <div>
+            <label for="to-account-name">To</label>
+            <input id="to-account-name" name="to-account-name" />
+          </div>
+          <div>
+            <label for="amount">Amount</label>
+            <input id="amount" name="amount" />
+          </div>
+          <button type="submit">Submit</button>
+        </form>
+      </section>
+    </main>
+  </body>
 </html>

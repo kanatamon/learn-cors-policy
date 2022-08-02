@@ -2,9 +2,46 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.container {
-  font-size: 3rem;
-  margin: auto;
-  max-width: 800px;
-  margin-top: 20px;
+html,
+body {
+  height: 100%;
+}
+
+p {
+  margin: unset;
+}
+
+body {
+  margin: unset;
+}
+
+nav {
+  padding-inline: 1.5rem;
+  min-height: 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #dedede;
+}
+
+main {
+  display: grid;
+  grid-template-columns: 1fr 64ch 1fr;
+  margin-top: 3rem;
+  row-gap: 2.5rem;
+}
+
+main > * {
+  grid-column: 2;
+}
+
+.card {
+  padding: 1rem;
+  border: 2px solid #dedede;
+}
+
+.flex-inline {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
 }
