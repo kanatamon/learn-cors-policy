@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { request } from 'express';
 import cookieParser from 'cookie-parser';
 import { findAccount } from './account.model';
 
@@ -9,6 +9,7 @@ const ALLOWED_ORIGIN = 'http://127.0.0.1:3000';
 const app = express();
 
 app.use(cookieParser());
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
@@ -59,8 +60,54 @@ app.get('/account', (req, res) => {
 });
 
 app.post('/transfer', (req, res) => {
-  // TODO: add implementation
-  res.status(401).json({ errorMessage: 'No permission' });
+  const accountName = req.cookies?.accountName ?? undefined;
+  if (typeof accountName !== 'string') {
+    return res.status(401).json({ errorMessage: `You've not logged in yet` });
+  }
+
+  const fromAccount = findAccount(accountName);
+  if (!fromAccount) {
+    return res.status(401).json({
+      errorMessage: `You're trying to access the account '${accountName}', but it is not found.`,
+    });
+  }
+
+  const { toAccountName, amount } = req.body;
+  const errorFields = {
+    toAccountName:
+      typeof toAccountName !== 'string'
+        ? `Invalid toAccountName: ${toAccountName}`
+        : undefined,
+    amount: !Number.isFinite(+amount)
+      ? `Invalid amount: ${amount}`
+      : +amount < 0
+      ? `Invalid amount: must be positive number`
+      : undefined,
+  };
+  if (Object.values(errorFields).some(Boolean)) {
+    return res.status(400).json({
+      errorMessage: `Invalid field`,
+      errorFields,
+    });
+  }
+
+  const toAccount = findAccount(toAccountName);
+  if (!toAccount) {
+    return res.status(400).json({
+      errorMessage: `Can't transfer to account '${toAccountName}', it's NOT existed.`,
+    });
+  }
+
+  if (fromAccount.balance - amount < 0) {
+    return res.status(400).json({
+      errorMessage: `Not enough balance to transfer`,
+    });
+  }
+
+  toAccount.balance += amount;
+  fromAccount.balance -= amount;
+
+  return res.json({});
 });
 
 app.post('/login', (req, res) => {

@@ -51,6 +51,36 @@ const API_ENDPOINT = 'http://localhost:4000';
   });
 })();
 
+(function registerTransferSubmission() {
+  const formElm = getSelector<HTMLFormElement>('#transfer-submission');
+  formElm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const res = await fetch(`${API_ENDPOINT}/transfer`, {
+      method: 'POST',
+      body: JSON.stringify(
+        // @ts-ignore
+        Object.fromEntries(new FormData(event.target).entries())
+      ),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    });
+
+    if (res.ok) {
+      await updateToAuthorizedUI();
+
+      // Clean up form after success
+      formElm.reset();
+    }
+
+    if (!res.ok) {
+      // TODO: Handle error
+    }
+  });
+})();
+
 function updateToUnauthorizedUI() {
   const loginFormElm = getSelector<HTMLFormElement>('#login-submission');
   // Reset form's values

@@ -32,16 +32,16 @@
           >Balance:&nbsp;<input id="balance" readonly name="balance"
         /></label>
       </section>
-      <section id="transfer" class="card">
+      <section class="card">
         <header>Transfer</header>
-        <form>
+        <form id="transfer-submission">
           <div>
             <label for="to-account-name">To</label>
-            <input id="to-account-name" name="to-account-name" />
+            <input id="to-account-name" name="toAccountName" />
           </div>
           <div>
             <label for="amount">Amount</label>
-            <input id="amount" name="amount" />
+            <input id="amount" name="amount" type="number" />
           </div>
           <button type="submit">Submit</button>
         </form>
