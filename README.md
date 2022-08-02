@@ -172,6 +172,6 @@ https://stackoverflow.com/a/67001424/3741801
 
 - Original blog -> [read more](https://dev.to/lydiahallie/cs-visualized-cors-5b8h#cs-cors)
 
-- Check lists to set CORS cookie 0 -> [read more](https://stackoverflow.com/a/67001424/3741801)
+- Check lists to set CORS cookie -> [read more](https://stackoverflow.com/a/67001424/3741801)
 
 - Things to notice about cache CORS request -> [read more](https://httptoolkit.tech/blog/cache-your-cors/)
